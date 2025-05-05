@@ -1,73 +1,72 @@
-/*-------------------------------- Constants --------------------------------*/
-
-/*-------------------------------- Variables --------------------------------*/
 let firstN =null;
 let secondN=null;
-
-/*------------------------ Cached Element References ------------------------*/
+let operation =null;
+let total;
+//------------------------ Cached Element References ------------------------/
 const buttons = document.querySelectorAll('.button');
 const calculator = document.querySelector('#calculator');
 const show = document.querySelector('.display');
 show.innerText=0;
-const handleOperatorClick = (event) => {
-    firstN = show.innerText;
-calculator = event.target.id;
-    show.innerText = 0;
-  };
-  const handleEqualBtnClick = () => {
-    secondN = totalDisplay.innerText;
-  };
-/*----------------------------- Event Listeners -----------------------------*/
-buttons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-        show.innerText= shows(show.innerText+ event.target.innerText);
-  
-     
-    });
-  });
+//----------------------------- Event Listeners -----------------------------/
   calculator.addEventListener('click', (event) => {
-    
     console.log(event.target.innerText);
-  
     // Example
     if (event.target.classList.contains('number')) {
+      if (firstN === null && operation === null && secondN === null){
+        firstN=event.target.innerText;
+        show.innerText = firstN
+      }
+      else if (firstN !== null && operation === null && secondN === null){
+        if (firstN===total) firstN = event.target.innerText
+        else firstN+=event.target.innerText;
+        show.innerText = firstN
+      }
+      else if (firstN !== null && operation !== null && secondN === null){
+        secondN=event.target.innerText;
+        show.innerText = secondN
+      }
+      else if (firstN !== null && operation !== null && secondN !== null){
+        secondN+=event.target.innerText;
+        show.innerText = secondN
+      }
 
-      // Do something with a number
- show.innerText===('number');
+      console.log("firstN = ", firstN, "secondN = ", secondN);
     }
-  
-    // Example
-    if (event.target.innerText === '*') {
-      // Do something with this operator
-      let total = firstN*=secondN
-      show.innerText =total;
-    }
-   else if (event.target.innerText === '/') {
-        // Do something with this operator
-        let total = firstN/=secondN
-        show.innerText =total;
-      }
-    else  if (event.target.innerText === '+') {
-        let total = firstN+=secondN;
-        show.innerText =total;
-        // Do something with this operator
-        
-      }
-      if (event.target.innerText === 'C') {
-        // Do something with this operator
-        total=0;
-        total=show.innerText;
-        
-      }
-      if (event.target.innerText === '-') {
-        // Do something with this operator
-        let total = firstN-=secondN
-        show.innerText =total;
-      }
-  });
-  calculator.forEach((operator) => {
-    operator.addEventListener('click', handleOperatorClick);
-  });
-  
 
-/*-------------------------------- Functions --------------------------------*/
+    if (event.target.classList.contains('operator')) {
+
+     if  (event.target.innerText === 'C') {
+        show.innerText = 0;
+        firstN = null;
+        secondN = null;
+        operation = null;
+        console.log("Clear");
+
+    } else {
+        operation=event.target.innerText;
+        console.log('selected operation '+ operation);
+
+    }
+  }
+  if (event.target.innerText === '=') {
+
+
+    firstN = firstN * 1
+    secondN = secondN * 1
+
+    if (operation === '+') {
+      total = firstN + secondN;
+    } else if (operation === '-') {
+      total = firstN - secondN;
+    } else if (operation === '*') {
+      total = firstN * secondN;
+    } else if (operation === '/') {
+      total =  firstN / secondN ;
+    }
+
+      show.innerText=total;
+      firstN=total;
+      operation = null;
+     secondN = null;
+    }
+  });
